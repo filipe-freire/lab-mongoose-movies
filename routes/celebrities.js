@@ -14,9 +14,11 @@ router.get('/celebrities', (req, res, next) => {
 });
 
 router.get('/celebrities/:id', (req, res, next) => {
-  Celebrity.findOne(id)
-    .then(celebrities => {
-      res.render('celebrities/show', { celebrities });
+  const id = req.params.id;
+
+  Celebrity.findById(id)
+    .then(celebrity => {
+      res.render('celebrities/show', celebrity);
     })
     .catch(error => {
       next(error);
