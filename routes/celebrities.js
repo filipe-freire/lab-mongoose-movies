@@ -3,6 +3,29 @@ const router = express.Router();
 
 const Celebrity = require('./../models/celebrity');
 
+router.get('/celebrities/create', (req, res) => {
+  res.render('celebrities/create');
+});
+
+router.post('/celebrities', (req, res, next) => {
+  const data = req.body;
+
+  Celebrity.create({
+    name: data.name,
+    occupation: data.occupation,
+    catchPhrase: data.catchPhrase
+  })
+    .then(celebrity => {
+      console.log('Following celebrity created:', celebrity);
+      celebrity.save();
+      res.redirect('celebrities');
+    })
+    .catch(error => {
+      res.render('celebrities/create');
+      next(error);
+    });
+});
+
 router.get('/celebrities', (req, res, next) => {
   Celebrity.find()
     .then(celebrities => {
